@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
 
 @Injectable()
 export class TicketsService {
@@ -103,5 +104,34 @@ export class TicketsService {
       throw new NotFoundException('Ticket not found');
     }
     return ticket;
+  }
+
+  async updateStatus(
+    id: string,
+    updateTicketStatusDto: UpdateTicketStatusDto,
+    user: any,
+  ) {
+    if (user.role !== 'ADMIN') {
+      throw new ForbiddenException(
+        'Hanya admin yang dapat mengubah status ticket',
+      );
+    }
+
+    const ticket = await this.prisma.ticket.findUnique({
+      where: { id },
+    });
+
+    if (!ticket) {
+      throw new NotFoundException('Ticket tidak ditemukan');
+    }
+
+    return this.prisma.ticket.update({
+      where: {
+        id,
+      },
+      data: {
+        status: updateTicketStatusDto.status,
+      },
+    });
   }
 }
