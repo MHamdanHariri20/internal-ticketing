@@ -22,8 +22,8 @@ export class TicketsController {
   }
 
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  findAll(@Request() req) {
+    return this.ticketsService.findAll(req.user);
   }
 
   @Get(':id')

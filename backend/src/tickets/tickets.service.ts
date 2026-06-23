@@ -16,8 +16,34 @@ export class TicketsService {
     });
   }
 
-  async findAll() {
+  async findAll(user: any) {
+    if (user.role === 'ADMIN') {
+      return this.prisma.ticket.findMany({
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          assignedTo: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    }
     return this.prisma.ticket.findMany({
+      where: {
+        createdById: user.id,
+      },
       include: {
         createdBy: {
           select: {
@@ -33,6 +59,9 @@ export class TicketsService {
             email: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }
