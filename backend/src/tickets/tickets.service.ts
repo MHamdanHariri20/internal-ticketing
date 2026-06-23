@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -67,7 +67,7 @@ export class TicketsService {
   }
 
   async findOne(id: string) {
-    return this.prisma.ticket.findUnique({
+    const ticket = await this.prisma.ticket.findUnique({
       where: { id },
       include: {
         createdBy: {
@@ -84,8 +84,24 @@ export class TicketsService {
             email: true,
           },
         },
-        comments: true,
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
+    if (!ticket) {
+      throw new NotFoundException('Ticket not found');
+    }
+    return ticket;
   }
 }
