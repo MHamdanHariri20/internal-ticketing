@@ -3,10 +3,14 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
+import { ActivitiesService } from 'src/activities/activities.service';
 
 @Injectable()
 export class TicketsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activitiesService: ActivitiesService,
+  ) {}
 
   async create(createTicketDto: CreateTicketDto, userId: string) {
     return this.prisma.ticket.create({
@@ -125,7 +129,9 @@ export class TicketsService {
       throw new NotFoundException('Ticket tidak ditemukan');
     }
 
-    return this.prisma.ticket.update({
+    const oldStatus = ticket.status;
+
+    const updatedTicket = await this.prisma.ticket.update({
       where: {
         id,
       },
@@ -133,5 +139,13 @@ export class TicketsService {
         status: updateTicketStatusDto.status,
       },
     });
+    await this.activitiesService.createActivity({
+      ticketId: ticket.id,
+      userId: user.id,
+      activity: "Status Tiket Diperbarui",
+      oldStatus,
+      newStatus: updateTicketStatusDto.status,
+    });
+    return updatedTicket;
   }
 }

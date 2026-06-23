@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { CommentsModule } from './comments/comments.module';
+import { ActivitiesModule } from './activities/activities.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { CommentsModule } from './comments/comments.module';
     AuthModule,
     TicketsModule,
     CommentsModule,
+    ActivitiesModule,
+    DashboardModule,
   ],
 
   controllers: [AppController],

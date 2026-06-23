@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { ActivitiesService } from 'src/activities/activities.service';
 
 @Injectable()
 export class CommentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly activitiesService: ActivitiesService,
+  ) {}
 
   async create(
     ticketId: string,
@@ -22,7 +26,7 @@ export class CommentsService {
       throw new NotFoundException('Ticket tidak ditemukan');
     }
 
-    return this.prisma.ticketComment.create({
+    const comment = await this.prisma.ticketComment.create({
       data: {
         ticketId,
         userId,
@@ -37,5 +41,11 @@ export class CommentsService {
         },
       },
     });
+    await this.activitiesService.createActivity({
+      ticketId,
+      userId,
+      activity: 'Menambahkan komentar',
+    });
+    return comment;
   }
 }
