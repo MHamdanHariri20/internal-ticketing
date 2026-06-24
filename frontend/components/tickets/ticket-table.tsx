@@ -9,6 +9,8 @@ import {
 
 import { StatusBadge } from "./status-badge";
 import { PriorityBadge } from "./priority-badge";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type Ticket = {
   id: string;
@@ -50,7 +52,9 @@ export function TicketTable({ tickets }: TicketTableProps) {
             </TableCell>
             <TableCell>{ticket.createdAt}</TableCell>
             <TableCell className="text-right">
-              Detail
+              <Button asChild size="sm" variant="outline">
+                <Link href={`/tickets/${ticket.id}`}>Detail</Link>
+              </Button>
             </TableCell>
           </TableRow>
         ))}

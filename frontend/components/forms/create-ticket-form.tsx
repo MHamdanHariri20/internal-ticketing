@@ -41,7 +41,7 @@ export default function CreateTicketForm() {
     try {
       await createTicket(values);
 
-      router.push("/tickets");
+      router.replace("/tickets");
     } catch (error) {
       console.error(error);
     }

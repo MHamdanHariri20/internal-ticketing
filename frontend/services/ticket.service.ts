@@ -16,3 +16,23 @@ export const createTicket = async (data: {
 
   return response.data;
 };
+
+export const getTicketById = async (id: string) => {
+  const response = await api.get(`/tickets/${id}`);
+
+  return response.data;
+};
+
+export const createComment = async (
+  ticketId: string,
+  comment: string,
+) => {
+  const response = await api.post(
+    `/tickets/${ticketId}/comments`,
+    {
+      comment,
+    },
+  );
+
+  return response.data;
+};
