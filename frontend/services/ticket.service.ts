@@ -5,3 +5,14 @@ export const getTickets = async () => {
 
   return response.data;
 };
+
+export const createTicket = async (data: {
+  title: string;
+  category: string;
+  priority: string;
+  description: string;
+}) => {
+  const response = await api.post("/tickets", data);
+
+  return response.data;
+};

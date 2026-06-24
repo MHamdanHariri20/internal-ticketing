@@ -7,6 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { StatusBadge } from "./status-badge";
+import { PriorityBadge } from "./priority-badge";
+
 type Ticket = {
   id: string;
   title: string;
@@ -39,8 +42,12 @@ export function TicketTable({ tickets }: TicketTableProps) {
           <TableRow key={ticket.id}>
             <TableCell>{ticket.title}</TableCell>
             <TableCell>{ticket.category}</TableCell>
-            <TableCell>{ticket.priority}</TableCell>
-            <TableCell>{ticket.status}</TableCell>
+            <TableCell>
+              <PriorityBadge priority={ticket.priority} />
+            </TableCell>
+            <TableCell>
+              <StatusBadge status={ticket.status} />
+            </TableCell>
             <TableCell>{ticket.createdAt}</TableCell>
             <TableCell className="text-right">
               Detail

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { TicketTable } from "@/components/tickets/ticket-table";
 import { getTickets } from "@/services/ticket.service";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState([]);
@@ -22,8 +24,13 @@ export default function TicketsPage() {
   }, []);
   return (
     <>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">Data Tiket</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Data Tiket</h1>
+        </div>
+        <Button asChild>
+          <Link href="/tickets/create">Create Ticket</Link>
+        </Button>
       </div>
       <TicketTable tickets={tickets} />
     </>
