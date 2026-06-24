@@ -211,25 +211,26 @@ Main tables:
 ## Screenshots
 
 ### Login Page
-![Dashboard](<img width="959" height="473" alt="Screenshot 2026-06-24 152421" src="https://github.com/user-attachments/assets/85e686fe-7044-4e6b-9b1a-eee8d7d1f5fa" />)
+
+![Login Page](https://github.com/user-attachments/assets/85e686fe-7044-4e6b-9b1a-eee8d7d1f5fa)
 
 ### Dashboard
 
-![Dashboard](<img width="959" height="472" alt="Screenshot 2026-06-24 151540" src="https://github.com/user-attachments/assets/fbc4c463-2a1f-46af-9c20-a75d4e628dc7" />)
+![Dashboard](https://github.com/user-attachments/assets/fbc4c463-2a1f-46af-9c20-a75d4e628dc7)
 
 ### Ticket List
 
-![Ticket List](<img width="959" height="467" alt="Screenshot 2026-06-24 153658" src="https://github.com/user-attachments/assets/bfd7f0ff-9cb7-440c-be6b-e0d04d776b02" />)
+![Ticket List](https://github.com/user-attachments/assets/d7ce7dc8-1bac-40dc-a52a-22c92d5795e1)
 
 ### Ticket Detail
 
-![Ticket Detail 1](<img width="948" height="476" alt="Screenshot 2026-06-24 151554" src="https://github.com/user-attachments/assets/235a93f8-f44a-4036-8d55-2a20cac19b4d" />)
-![Ticket Detail 2](<img width="950" height="472" alt="Screenshot 2026-06-24 151611" src="https://github.com/user-attachments/assets/361e2b41-9f95-4b17-a25f-31c9ed8ad8bd" />)
+![Ticket Detail 1](https://github.com/user-attachments/assets/235a93f8-f44a-4036-8d55-2a20cac19b4d)
+
+![Ticket Detail 2](https://github.com/user-attachments/assets/361e2b41-9f95-4b17-a25f-31c9ed8ad8bd)
 
 ### Create Ticket
 
-![Create Ticket](<img width="959" height="470" alt="Screenshot 2026-06-24 153738" src="https://github.com/user-attachments/assets/dfb211bd-5f91-487b-a51d-a1d9467f65f3" /><img width="959" height="467" alt="Screenshot 2026-06-24 153658" src="https://github.com/user-attachments/assets/d7ce7dc8-1bac-40dc-a52a-22c92d5795e1" />
-)
+![Create Ticket](https://github.com/user-attachments/assets/dfb211bd-5f91-487b-a51d-a1d9467f65f3)
 
 ---
 
