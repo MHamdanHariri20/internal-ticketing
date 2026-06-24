@@ -1,26 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { StatusBadge } from "@/components/tickets/status-badge";
 import { PriorityBadge } from "@/components/tickets/priority-badge";
 
-import { getTicketById } from "@/services/ticket.service";
-
 import CommentForm from "@/components/forms/comment-form";
 import { createComment } from "@/services/ticket.service";
+
+import { getTicketById, updateTicketStatus } from "@/services/ticket.service";
 
 export default function TicketDetailPage() {
   const params = useParams();
   const id = params.id as string;
 
   const [ticket, setTicket] = useState<any>(null);
+
+  const user = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    const storedUser = localStorage.getItem("user");
+
+    return storedUser ? JSON.parse(storedUser) : null;
+  }, []);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -43,6 +59,7 @@ export default function TicketDetailPage() {
       const data = await getTicketById(id);
 
       setTicket(data);
+      setStatus(data.status);
     } catch (error) {
       console.error(error);
     }
@@ -58,6 +75,16 @@ export default function TicketDetailPage() {
     await createComment(id, comment);
 
     await fetchTicket();
+  };
+
+  const handleUpdateStatus = async () => {
+    try {
+      await updateTicketStatus(id, status);
+
+      await fetchTicket();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!ticket) {
@@ -92,10 +119,31 @@ export default function TicketDetailPage() {
             <PriorityBadge priority={ticket.priority} />
           </div>
 
-          <div>
-            <p className="text-sm text-muted-foreground">Status</p>
-            <StatusBadge status={ticket.status} />
-          </div>
+          {user?.role === "ADMIN" && (
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm text-muted-foreground">Change Status</p>
+
+                <Select value={status} onValueChange={setStatus}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="OPEN">Open</SelectItem>
+
+                    <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+
+                    <SelectItem value="DONE">Done</SelectItem>
+
+                    <SelectItem value="REJECTED">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button onClick={handleUpdateStatus}>Update Status</Button>
+            </div>
+          )}
 
           <div>
             <p className="text-sm text-muted-foreground">Description</p>
@@ -146,7 +194,31 @@ export default function TicketDetailPage() {
         </CardHeader>
 
         <CardContent>
-          <p className="text-muted-foreground">No activity logs yet.</p>
+          {!ticket.activities?.length ? (
+            <p className="text-muted-foreground">No activity logs yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {ticket.activities.map((activity: any) => (
+                <div key={activity.id} className="border rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">{activity.user?.name}</p>
+
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(activity.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+
+                  <p className="mt-2 text-sm">{activity.activity}</p>
+
+                  {activity.oldStatus && activity.newStatus && (
+                    <p className="text-sm text-muted-foreground">
+                      {activity.oldStatus} → {activity.newStatus}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

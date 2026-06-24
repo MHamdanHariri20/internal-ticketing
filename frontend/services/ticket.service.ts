@@ -36,3 +36,17 @@ export const createComment = async (
 
   return response.data;
 };
+
+export const updateTicketStatus = async (
+  ticketId: string,
+  status: string,
+) => {
+  const response = await api.patch(
+    `/tickets/${ticketId}/status`,
+    {
+      status,
+    },
+  );
+
+  return response.data;
+};
