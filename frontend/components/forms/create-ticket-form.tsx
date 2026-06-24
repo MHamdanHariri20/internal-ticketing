@@ -34,6 +34,7 @@ export default function CreateTicketForm() {
       category: "",
       priority: "",
       description: "",
+      attachmentUrl: "",
     },
   });
 
@@ -121,6 +122,17 @@ export default function CreateTicketForm() {
         <FormError message={form.formState.errors.description?.message} />
       </div>
       <div>
+        <div className="space-y-2">
+          <Label htmlFor="attachmentUrl">Attachment URL</Label>
+
+          <Input
+            id="attachmentUrl"
+            placeholder="https://example.com/file.pdf"
+            {...form.register("attachmentUrl")}
+          />
+
+          <FormError message={form.formState.errors.attachmentUrl?.message} />
+        </div>
         <Button type="submit" disabled={form.formState.isSubmitting}>
           Create Ticket
         </Button>

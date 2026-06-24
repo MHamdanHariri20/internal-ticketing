@@ -18,6 +18,7 @@ type Ticket = {
   category: string;
   priority: string;
   status: string;
+  attachmentUrl: string;
   createdAt: string;
 };
 
@@ -34,6 +35,7 @@ export function TicketTable({ tickets }: TicketTableProps) {
           <TableHead>Category</TableHead>
           <TableHead>Priority</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead>Attachment</TableHead>
           <TableHead>Created</TableHead>
           <TableHead className="text-right">Action</TableHead>
         </TableRow>
@@ -49,6 +51,20 @@ export function TicketTable({ tickets }: TicketTableProps) {
             </TableCell>
             <TableCell>
               <StatusBadge status={ticket.status} />
+            </TableCell>
+            <TableCell>
+              {ticket.attachmentUrl ? (
+                <a
+                  href={ticket.attachmentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View File
+                </a>
+              ) : (
+                <span className="text-muted-foreground">-</span>
+              )}
             </TableCell>
             <TableCell>{ticket.createdAt}</TableCell>
             <TableCell className="text-right">

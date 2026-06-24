@@ -15,7 +15,6 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { StatusBadge } from "@/components/tickets/status-badge";
 import { PriorityBadge } from "@/components/tickets/priority-badge";
 
 import CommentForm from "@/components/forms/comment-form";
@@ -150,77 +149,85 @@ export default function TicketDetailPage() {
 
             <p>{ticket.description}</p>
           </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Attachment</p>
+
+            <p>{ticket.attachmentUrl || "-"}</p>
+          </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Comments</CardTitle>
-        </CardHeader>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Comments</CardTitle>
+          </CardHeader>
 
-        <CardContent>
-          <div className="mb-6">
-            <CommentForm onSubmit={handleCreateComment} />
-          </div>
-          {ticket.comments.length === 0 ? (
-            <p className="text-muted-foreground">No comments yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {[...ticket.comments]
-                .sort(
-                  (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime(),
-                )
-                .map((comment: any) => (
-                  <div key={comment.id} className="border rounded-lg p-3">
+          <CardContent>
+            <div className="mb-6">
+              <CommentForm onSubmit={handleCreateComment} />
+            </div>
+            {ticket.comments.length === 0 ? (
+              <p className="text-muted-foreground">No comments yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {[...ticket.comments]
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime(),
+                  )
+                  .map((comment: any) => (
+                    <div key={comment.id} className="border rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <p className="font-medium">{comment.user.name}</p>
+
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(comment.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+
+                      <p className="mt-2 text-sm">{comment.comment}</p>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Activity Logs</CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            {!ticket.activities?.length ? (
+              <p className="text-muted-foreground">No activity logs yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {ticket.activities.map((activity: any) => (
+                  <div key={activity.id} className="border rounded-lg p-3">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium">{comment.user.name}</p>
+                      <p className="font-medium">{activity.user?.name}</p>
 
                       <p className="text-xs text-muted-foreground">
-                        {new Date(comment.createdAt).toLocaleString()}
+                        {new Date(activity.createdAt).toLocaleString()}
                       </p>
                     </div>
 
-                    <p className="mt-2 text-sm">{comment.comment}</p>
+                    <p className="mt-2 text-sm">{activity.activity}</p>
+
+                    {activity.oldStatus && activity.newStatus && (
+                      <p className="text-sm text-muted-foreground">
+                        {activity.oldStatus} → {activity.newStatus}
+                      </p>
+                    )}
                   </div>
                 ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Activity Logs</CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          {!ticket.activities?.length ? (
-            <p className="text-muted-foreground">No activity logs yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {ticket.activities.map((activity: any) => (
-                <div key={activity.id} className="border rounded-lg p-3">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium">{activity.user?.name}</p>
-
-                    <p className="text-xs text-muted-foreground">
-                      {new Date(activity.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-
-                  <p className="mt-2 text-sm">{activity.activity}</p>
-
-                  {activity.oldStatus && activity.newStatus && (
-                    <p className="text-sm text-muted-foreground">
-                      {activity.oldStatus} → {activity.newStatus}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
