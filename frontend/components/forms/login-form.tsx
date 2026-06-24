@@ -15,8 +15,10 @@ import { Label } from "@/components/ui/label";
 import { LoginFormValues, loginSchema } from "@/lib/validations/auth";
 import { FormError } from "@/components/common/form-error";
 import { login } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,7 +31,10 @@ export default function LoginForm() {
     try {
       const response = await login(values);
 
-      console.log(response);
+      localStorage.setItem("accessToken", response.access_token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
     }
