@@ -1,31 +1,31 @@
-import { TicketTable } from "@/components/tickets/ticket-table";
+"use client";
 
-const tickets = [
-  {
-    id: "1",
-    title: "Printer Error",
-    category: "Hardware",
-    priority: "High",
-    status: "OPEN",
-    createdAt: "2025-06-23",
-  },
-  {
-    id: "2",
-    title: "VPN Tidak Bisa",
-    category: "Network",
-    priority: "Medium",
-    status: "IN_PROGRESS",
-    createdAt: "2025-06-22",
-  },
-];
+import { useEffect, useState } from "react";
+import { TicketTable } from "@/components/tickets/ticket-table";
+import { getTickets } from "@/services/ticket.service";
 
 export default function TicketsPage() {
-    return (
-        <>
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold">Data Tiket</h1>
-            </div>
-            <TicketTable tickets={tickets} />
-        </>
-    );
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const data = await getTickets();
+
+        setTickets(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTickets();
+  }, []);
+  return (
+    <>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">Data Tiket</h1>
+      </div>
+      <TicketTable tickets={tickets} />
+    </>
+  );
 }
