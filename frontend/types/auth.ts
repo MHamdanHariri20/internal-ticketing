@@ -13,6 +13,6 @@ export interface LoginDto {
 }
 
 export interface LoginResponse {
-  accessToken: string;
+  access_token: string;
   user: User;
 }

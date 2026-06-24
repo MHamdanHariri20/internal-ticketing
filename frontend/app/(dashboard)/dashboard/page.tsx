@@ -43,11 +43,11 @@ useEffect(() => {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        <SummaryCard title="Total Tickets" value={summary?.tickets.total} />
-        <SummaryCard title="Open" value={summary?.tickets.open} />
-        <SummaryCard title="In Progress" value={summary?.tickets.inProgress} />
-        <SummaryCard title="Done" value={summary?.tickets.done} />
-        <SummaryCard title="Rejected" value={summary?.tickets.rejected} />
+        <SummaryCard title="Total Tickets" value={summary?.tickets.total ?? 0} />
+        <SummaryCard title="Open" value={summary?.tickets.open ?? 0} />
+        <SummaryCard title="In Progress" value={summary?.tickets.inProgress ?? 0} />
+        <SummaryCard title="Done" value={summary?.tickets.done ?? 0} />
+        <SummaryCard title="Rejected" value={summary?.tickets.rejected ?? 0} />
       </div>
     </div>
   );
