@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -102,6 +106,19 @@ export class TicketsService {
             createdAt: 'asc',
           },
         },
+        activities: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
     if (!ticket) {
@@ -142,7 +159,7 @@ export class TicketsService {
     await this.activitiesService.createActivity({
       ticketId: ticket.id,
       userId: user.id,
-      activity: "Status Tiket Diperbarui",
+      activity: 'Status Tiket Diperbarui',
       oldStatus,
       newStatus: updateTicketStatusDto.status,
     });

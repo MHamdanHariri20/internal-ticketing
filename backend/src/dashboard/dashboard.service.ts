@@ -20,26 +20,32 @@ export class DashboardService {
       doneTickets,
       rejectedTickets,
     ] = await Promise.all([
-      this.prisma.ticket.count(),
+      this.prisma.ticket.count({
+        where,
+      }),
       this.prisma.ticket.count({
         where: {
+          ...where,
           status: TicketStatus.OPEN,
         },
       }),
 
       this.prisma.ticket.count({
         where: {
+          ...where,
           status: TicketStatus.IN_PROGRESS,
         },
       }),
 
       this.prisma.ticket.count({
         where: {
+          ...where,
           status: TicketStatus.DONE,
         },
       }),
       this.prisma.ticket.count({
         where: {
+          ...where,
           status: TicketStatus.REJECTED,
         },
       }),
